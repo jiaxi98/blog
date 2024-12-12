@@ -1,16 +1,19 @@
 # Anatomy of OpenFOAM LESModel class
 
-This is the first 
+This is the first blog on understanding the OpenFOAM programming. Our goal is to understand the code structure of the turbulence model for large eddy simulation (LES). We will understand the inheritance relationship between different LES turbulence model classes as well as the 
 
 
 ## Smagorinsky
-
+This class is defined under the directory: src/TurbulenceModels/turbulenceModels/LES/Smagorinsky.
 ```cpp
 template<class BasicTurbulenceModel>
 class Smagorinsky
 :
     public LESeddyViscosity<BasicTurbulenceModel>
 ```
+It is derived from the template class `LESeddyViscosity<BasicTurbulenceModel>`, same as the WALE model.
+
+Moreover, one can check that one of the constants, e.g. $C_k$ used in the Smagorinsky model is defined in the `Smagorinsky` class while the other constant $C_e$ is defined in `LESModel` class.
 
 For discussion relates to the treatment of the Smagorinsky constant in OpenFOAM, please check (OpenFOAM Smagorinsky)[https://caefn.com/openfoam/smagorinsky-sgs-model]
 
@@ -30,7 +33,7 @@ void SmagorinskyNN<BasicTurbulenceModel>::correct()
 Moreover, the `correct` function of Smagorinsky class first call the `correct` function of LESeddyViscosity class.
 
 ## LESeddyViscosity
-The LESeddyViscosity class is derived from the eddyViscosity class.
+This class is defined under the directory: src/TurbulenceModels/turbulenceModels/LES/LESeddyViscosity. It is derived from the eddyViscosity class.
 ```cpp
 template<class BasicTurbulenceModel>
 class LESeddyViscosity
@@ -75,4 +78,53 @@ class LESModel
     public BasicTurbulenceModel
 ```
 
-## BasicTurbulenceModel
+## TurbulenceModel
+This class is defined under the directory: src/TurbulenceModels/turbulenceModels.
+```cpp
+template
+<
+    class Alpha,
+    class Rho,
+    class BasicTurbulenceModel,
+    class TransportModel
+>
+class TurbulenceModel
+:
+    public BasicTurbulenceModel
+```
+This turbulent class has the similar structure as the `LESModel`, e.g. both derived from `BasicTurbulenceModel`.
+
+## turbulenceModel
+This class is defined under the directory: src/TurbulenceModels/turbulenceModels.
+```cpp
+class turbulenceModel
+:
+    public IOdictionary
+{
+
+protected:
+
+    // Protected data
+
+        const Time& runTime_;
+        const fvMesh& mesh_;
+
+        const volVectorField& U_;
+        const surfaceScalarField& alphaRhoPhi_;
+        const surfaceScalarField& phi_;
+
+        //- Near wall distance boundary field
+        nearWallDist y_;
+
+
+private:
+
+    // Private Member Functions
+
+        //- No copy construct
+        turbulenceModel(const turbulenceModel&) = delete;
+
+        //- No copy assignment
+        void operator=(const turbulenceModel&) = delete;
+}
+```
