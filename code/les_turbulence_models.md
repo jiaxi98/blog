@@ -128,3 +128,10 @@ private:
         void operator=(const turbulenceModel&) = delete;
 }
 ```
+
+The last important file for understanding the turbulence modeling module in OpenFOAM is `turbulentTransportModel.H` under the directory: src/TurbulenceModels/incompressible/turbulentTransportModels. This file can only be identified if one go through the case file for the `pisoFOAM` solver. For remaining information, please go through the (blog)[url] on `pisoFOAM` solver.
+
+
+## Remaining confusion
+I notice that under OpenFOAM-v2312/src/TurbulenceModels/turbulenceModels directory there are two classes with very similar name but different declaration: `TurbulenceModel`, `turbulenceModel`.
+What is the difference of these two classes and their usages?
