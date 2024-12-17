@@ -78,6 +78,9 @@ class LESModel
     public BasicTurbulenceModel
 ```
 
+## BasicTurbulenceModel
+As the BasicTurbulenceModel is constantly appearing in the template class, I find [blog1](https://marinecfd.xyz/post/openfoam-templated-turbulence-modeling-framework-part-1/) (in Chinese), [blog2](https://www.cfd-online.com/Forums/openfoam-programming-development/219626-how-understand-basicturbulencemodel-class-openfoam.html) (The post of dzsmoglai and wyldckat is very informative), and [blog3](https://www.cfd-online.com/Forums/openfoam-programming-development/216597-basicturbulencemodel-class-declaration-openfoam-6-a.html) beneficial for the understanding of it.
+
 ## TurbulenceModel
 This class is defined under the directory: src/TurbulenceModels/turbulenceModels.
 ```cpp
